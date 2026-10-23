@@ -20,3 +20,6 @@ The project provisions the following resources within a single VPC - `10.10.0.0/
     - Target Group - routes traffic from the ALB to the appropriate EC2 instances.
 - **Data Layer and Connectivity:**
     - VPC Gateway Endpoint for DynamoDB - provides secure, private connectivity from private subnets to DynamoDB without traversing the public internet or NAT Gateway - cost-optimized.
+
+# Diagram
+![AWS 3-Tier Architecture](docs/ALB%20architecture%20.svg)
