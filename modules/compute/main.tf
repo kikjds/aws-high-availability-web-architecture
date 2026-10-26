@@ -55,7 +55,7 @@ resource "aws_vpc_security_group_ingress_rule" "private_sg_ssh_ingress_rule" {
 
 resource "aws_vpc_security_group_ingress_rule" "private_sg_http_ingress_rule" {
   security_group_id            = aws_security_group.private_sg.id
-  referenced_security_group_id = aws_security_group.bastion_sg.id // Potem trzeba zmienic na alba 
+  referenced_security_group_id = var.alb_sg_id
   from_port                    = 80
   ip_protocol                  = "tcp"
   to_port                      = 80
