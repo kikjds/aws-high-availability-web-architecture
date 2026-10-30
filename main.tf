@@ -20,3 +20,11 @@ module "alb" {
   private_instance_ids = module.compute.private_instance_ids
   public_subnets       = module.vpc.public_subnets
 }
+
+module "dynamodb" {
+  source              = "./modules/dynamodb"
+  dynamodb_table_name = var.dynamodb_table_name
+  dynamodb_hash_key   = var.dynamodb_hash_key
+  dynamodb_range_key  = var.dynamodb_range_key
+  vpc_id              = module.vpc.vpc_id
+}
