@@ -22,9 +22,9 @@ resource "aws_dynamodb_resource_policy" "dynamodb_policy" {
     Version = "2012-10-17"
     Statement = [
       {
-        Sid      = "DenyDynamodbOutsideVpc"
-        Effect   = "Deny"
-        Action   = "dynamodb:*"
+        Sid       = "DenyDynamodbOutsideVpc"
+        Effect    = "Deny"
+        Action    = "dynamodb:*"
         Principal = "*"
         Resource  = "${aws_dynamodb_table.dynamodb.arn}"
 
