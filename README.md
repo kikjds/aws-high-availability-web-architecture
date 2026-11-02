@@ -12,7 +12,7 @@ The project provisions the following resources within a single VPC - `10.10.0.0/
     - 3 public subnets - across different Availability Zones - AZ1, AZ2, AZ3.
     - Application Load Balancer - ALB - the entry point for internet traffic.
     - Internet Gateway - IGW - provides connectivity to the outside world.
-    - NAT Gateway - allows private subnets to access the internet - e.g. for package updates.
+    - NAT Gateway - deployed in a single public subnet to allow private subnets to access the internet (e.g. for package updates) while reducing NAT Gateway costs.
     - Bastion Host - a hardened EC2 instance in a public subnet, used exclusively for secure SSH access to private instances.
 - **Private Layer:**
     - 3 private subnets - in AZ1, AZ2, AZ3.
