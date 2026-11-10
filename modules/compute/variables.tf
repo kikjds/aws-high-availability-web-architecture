@@ -13,3 +13,7 @@ variable "vpc_id" {
 variable "alb_sg_id" {
   type = string
 }
+
+variable "dynamodb_table_arn" {
+  type = string
+}

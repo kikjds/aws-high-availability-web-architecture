@@ -22,7 +22,7 @@ resource "aws_dynamodb_resource_policy" "dynamodb_policy" {
     Version = "2012-10-17"
     Statement = [
       {
-        Sid       = "DenyDynamodbOutsideVpc"
+        Sid       = "DenyDynamodbOutsideGatewayEndpoint"
         Effect    = "Deny"
         Action    = "dynamodb:*"
         Principal = "*"
@@ -30,7 +30,11 @@ resource "aws_dynamodb_resource_policy" "dynamodb_policy" {
 
         Condition = {
           StringNotEquals = {
-            "aws:SourceVpc" = "${var.vpc_id}"
+            "aws:SourceVpce" = var.vpc_endpoint_id
+          }
+
+          ArnNotEquals = {
+            "aws:PrincipalArn" = var.allowed_principal_arns
           }
         }
       }

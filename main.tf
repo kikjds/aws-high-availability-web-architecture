@@ -11,6 +11,7 @@ module "compute" {
   private_subnet_ids = module.vpc.private_subnet_ids
   vpc_id             = module.vpc.vpc_id
   alb_sg_id          = module.alb.alb_sg_id
+  dynamodb_table_arn = module.dynamodb.table_arn
   depends_on         = [module.vpc]
 }
 
@@ -22,9 +23,16 @@ module "alb" {
 }
 
 module "dynamodb" {
-  source              = "./modules/dynamodb"
-  dynamodb_table_name = var.dynamodb_table_name
-  dynamodb_hash_key   = var.dynamodb_hash_key
-  dynamodb_range_key  = var.dynamodb_range_key
-  vpc_id              = module.vpc.vpc_id
+  source                 = "./modules/dynamodb"
+  dynamodb_table_name    = var.dynamodb_table_name
+  dynamodb_hash_key      = var.dynamodb_hash_key
+  dynamodb_range_key     = var.dynamodb_range_key
+  vpc_endpoint_id        = module.gw-endpoint.vpc_endpoint_id
+  allowed_principal_arns = var.allowed_principal_arns
+}
+
+module "gw-endpoint" {
+  source                 = "./modules/gw-endpoint"
+  vpc_id                 = module.vpc.vpc_id
+  private_route_table_id = module.vpc.private_route_table_id
 }

@@ -32,3 +32,8 @@ variable "dynamodb_range_key" {
   type        = string
   description = "Dynamodb table sort key attribute name"
 }
+
+variable "allowed_principal_arns" {
+  type        = list(string)
+  description = "Allowed IAM principal ARNs"
+}

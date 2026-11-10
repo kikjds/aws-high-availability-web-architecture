@@ -10,6 +10,10 @@ variable "dynamodb_range_key" {
   type = string
 }
 
-variable "vpc_id" {
+variable "vpc_endpoint_id" {
   type = string
+}
+
+variable "allowed_principal_arns" {
+  type = list(string)
 }
