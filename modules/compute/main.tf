@@ -74,6 +74,59 @@ resource "aws_instance" "bastion" {
   }
 }
 
+// Private instances iam role
+resource "aws_iam_role" "private_ec2_role" {
+  name = "private-instances-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_instance_profile" "private_ec2_profile" {
+  name = "private-instances-profile"
+  role = aws_iam_role.private_ec2_role.name
+}
+
+resource "aws_iam_role_policy" "private_ec2_dynamodb" {
+  name = "private-instances-dynamodb-access"
+  role = aws_iam_role.private_ec2_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "dynamodb:BatchGetItem",
+          "dynamodb:BatchWriteItem",
+          "dynamodb:ConditionCheckItem",
+          "dynamodb:DeleteItem",
+          "dynamodb:DescribeTable",
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:Query",
+          "dynamodb:Scan",
+          "dynamodb:UpdateItem"
+        ]
+        Resource = [
+          var.dynamodb_table_arn,
+          "${var.dynamodb_table_arn}/index/*"
+        ]
+      }
+    ]
+  })
+}
+
 // Private instances
 resource "aws_instance" "private_instances" {
   count                  = length(var.private_subnet_ids)
@@ -88,7 +141,7 @@ resource "aws_instance" "private_instances" {
                             EOF
   subnet_id              = var.private_subnet_ids[count.index]
   vpc_security_group_ids = [aws_security_group.private_sg.id]
-
+  iam_instance_profile   = aws_iam_instance_profile.private_ec2_profile.name
   tags = {
     Name = "private-instance-${count.index + 1}"
   }
