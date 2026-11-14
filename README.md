@@ -4,6 +4,20 @@ This project demonstrates a classic 3-tier cloud architecture in AWS, fully depl
 
 The goal is to build a secure, highly available (HA) environment with strict isolation between the public and private layers.
 
+## Resource tagging
+
+Configure common resource tags through the required `resource_tags` map in
+`terraform.tfvars`. The AWS provider applies them to every resource that supports
+tags. Resource-specific `Name` tags remain defined in their respective modules.
+
+```hcl
+resource_tags = {
+  Project     = "aws-high-availability-web-architecture"
+  Environment = "development"
+  ManagedBy   = "Terraform"
+}
+```
+
 ## Architecture - Overview
 
 The project provisions the following resources within a single VPC - `10.10.0.0/16`:

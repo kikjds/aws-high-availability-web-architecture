@@ -3,6 +3,20 @@ variable "aws_region" {
   description = "AWS region where resources will be created"
 }
 
+variable "resource_tags" {
+  type        = map(string)
+  description = "Common tags applied to every AWS resource that supports tags"
+  nullable    = false
+
+  validation {
+    condition = alltrue([
+      for required_tag in ["Project", "Environment", "ManagedBy"] :
+      contains(keys(var.resource_tags), required_tag)
+    ])
+    error_message = "resource_tags must include Project, Environment, and ManagedBy."
+  }
+}
+
 variable "vpc_cidr_range" {
   type        = string
   description = "CIDR range for the VPC"
