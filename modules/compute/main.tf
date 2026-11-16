@@ -64,11 +64,11 @@ resource "aws_vpc_security_group_ingress_rule" "private_sg_http_ingress_rule" {
 
 // Bastion ec2
 resource "aws_instance" "bastion" {
-  ami                    = "ami-01ef747f983799d6f"
-  instance_type          = "t3.micro"
+  ami                    = var.ami_type
+  instance_type          = var.instance_type
   subnet_id              = var.public_subnet_id
   vpc_security_group_ids = [aws_security_group.bastion_sg.id]
-  key_name               = "default"
+  key_name               = var.ssh_key_name
   tags = {
     Name = "bastion"
   }
@@ -130,9 +130,9 @@ resource "aws_iam_role_policy" "private_ec2_dynamodb" {
 // Private instances
 resource "aws_instance" "private_instances" {
   count                  = length(var.private_subnet_ids)
-  instance_type          = "t3.micro"
-  ami                    = "ami-01ef747f983799d6f"
-  key_name               = "default"
+  instance_type          = var.instance_type
+  ami                    = var.ami_type
+  key_name               = var.ssh_key_name
   user_data              = <<-EOF
                             #!/bin/bash
                             apt update

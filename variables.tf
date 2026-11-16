@@ -51,3 +51,18 @@ variable "allowed_principal_arns" {
   type        = list(string)
   description = "Allowed IAM principal ARNs"
 }
+
+variable "ssh_key_name" {
+  type = string
+  description = "SSH key name to attach with vms"
+}
+
+variable "ami_type" {
+  type = string
+  description = "AMI type for instances"
+}
+
+variable "instance_type" {
+  type = string
+  description = "Instance type"
+}
