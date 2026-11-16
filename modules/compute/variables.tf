@@ -17,3 +17,15 @@ variable "alb_sg_id" {
 variable "dynamodb_table_arn" {
   type = string
 }
+
+variable "ssh_key_name" {
+  type = string
+}
+
+variable "ami_type" {
+  type = string
+}
+
+variable "instance_type" {
+  type = string
+}
