@@ -13,6 +13,9 @@ module "compute" {
   alb_sg_id          = module.alb.alb_sg_id
   dynamodb_table_arn = module.dynamodb.table_arn
   depends_on         = [module.vpc]
+  instance_type      = var.instance_type
+  ami_type           = var.ami_type
+  ssh_key_name       = var.ssh_key_name
 }
 
 module "alb" {

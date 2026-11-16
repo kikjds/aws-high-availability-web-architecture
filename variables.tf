@@ -53,16 +53,16 @@ variable "allowed_principal_arns" {
 }
 
 variable "ssh_key_name" {
-  type = string
+  type        = string
   description = "SSH key name to attach with vms"
 }
 
 variable "ami_type" {
-  type = string
+  type        = string
   description = "AMI type for instances"
 }
 
 variable "instance_type" {
-  type = string
+  type        = string
   description = "Instance type"
 }
