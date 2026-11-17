@@ -16,6 +16,7 @@ module "compute" {
   instance_type      = var.instance_type
   ami_type           = var.ami_type
   ssh_key_name       = var.ssh_key_name
+  bastion_allowed_ip = var.bastion_allowed_ip
 }
 
 module "alb" {
