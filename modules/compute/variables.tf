@@ -22,6 +22,10 @@ variable "ssh_key_name" {
   type = string
 }
 
+variable "bastion_allowed_ip" {
+  type = string
+}
+
 variable "ami_type" {
   type = string
 }

@@ -20,7 +20,7 @@ resource "aws_security_group" "bastion_sg" {
 
 resource "aws_vpc_security_group_ingress_rule" "bastion_sg_ingress_rule" {
   security_group_id = aws_security_group.bastion_sg.id
-  cidr_ipv4         = "0.0.0.0/0"
+  cidr_ipv4         = "${var.bastion_allowed_ip}/32"
   from_port         = 22
   ip_protocol       = "tcp"
   to_port           = 22

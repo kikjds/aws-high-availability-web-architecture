@@ -57,6 +57,11 @@ variable "ssh_key_name" {
   description = "SSH key name to attach with vms"
 }
 
+variable "bastion_allowed_ip" {
+  type        = string
+  description = "Public IPv4 address allowed to connect to the bastion over SSH"
+}
+
 variable "ami_type" {
   type        = string
   description = "AMI type for instances"
