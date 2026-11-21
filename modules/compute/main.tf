@@ -127,21 +127,34 @@ resource "aws_iam_role_policy" "private_ec2_dynamodb" {
   })
 }
 
+// Private instances launching template
+resource "aws_launch_template" "private_instances_template" {
+  name          = "Private_instances_nginx_template"
+  instance_type = var.instance_type
+  key_name      = var.ssh_key_name
+  image_id      = var.ami_type
+  user_data = base64encode(<<-EOF
+                    #!/bin/bash
+                    apt update
+                    apt install nginx -y
+                    echo 'Hello world' > /var/www/html/index.nginx-debian.html
+                    EOF
+  )
+  iam_instance_profile {
+    arn = aws_iam_instance_profile.private_ec2_profile.arn
+  }
+  vpc_security_group_ids = [aws_security_group.private_sg.id]
+
+}
+
+
 // Private instances
 resource "aws_instance" "private_instances" {
-  count                  = length(var.private_subnet_ids)
-  instance_type          = var.instance_type
-  ami                    = var.ami_type
-  key_name               = var.ssh_key_name
-  user_data              = <<-EOF
-                            #!/bin/bash
-                            apt update
-                            apt install nginx -y
-                            echo 'Hello world ${count.index + 1}' > /var/www/html/index.nginx-debian.html
-                            EOF
-  subnet_id              = var.private_subnet_ids[count.index]
-  vpc_security_group_ids = [aws_security_group.private_sg.id]
-  iam_instance_profile   = aws_iam_instance_profile.private_ec2_profile.name
+  count = length(var.private_subnet_ids)
+  launch_template {
+    id = aws_launch_template.private_instances_template.id
+  }
+  subnet_id = var.private_subnet_ids[count.index]
   tags = {
     Name = "private-instance-${count.index + 1}"
   }
