@@ -20,10 +20,9 @@ module "compute" {
 }
 
 module "alb" {
-  source               = "./modules/alb"
-  vpc_id               = module.vpc.vpc_id
-  private_instance_ids = module.compute.private_instance_ids
-  public_subnets       = module.vpc.public_subnets
+  source         = "./modules/alb"
+  vpc_id         = module.vpc.vpc_id
+  public_subnets = module.vpc.public_subnets
 }
 
 module "dynamodb" {
@@ -39,4 +38,11 @@ module "gw-endpoint" {
   source                 = "./modules/gw-endpoint"
   vpc_id                 = module.vpc.vpc_id
   private_route_table_id = module.vpc.private_route_table_id
+}
+
+module "asg" {
+  source                               = "./modules/asg"
+  private_subnet_ids                   = module.vpc.private_subnet_ids
+  private_instances_launch_template_id = module.compute.private_instances_launch_template_id
+  target_group_arn                     = module.alb.target_group_arn
 }

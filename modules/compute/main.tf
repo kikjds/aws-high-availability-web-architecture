@@ -146,16 +146,3 @@ resource "aws_launch_template" "private_instances_template" {
   vpc_security_group_ids = [aws_security_group.private_sg.id]
 
 }
-
-
-// Private instances
-resource "aws_instance" "private_instances" {
-  count = length(var.private_subnet_ids)
-  launch_template {
-    id = aws_launch_template.private_instances_template.id
-  }
-  subnet_id = var.private_subnet_ids[count.index]
-  tags = {
-    Name = "private-instance-${count.index + 1}"
-  }
-}
