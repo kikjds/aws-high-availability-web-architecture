@@ -42,13 +42,6 @@ resource "aws_lb_target_group" "target_group" {
   }
 }
 
-resource "aws_lb_target_group_attachment" "attachment" {
-  count            = length(var.private_instance_ids)
-  target_group_arn = aws_lb_target_group.target_group.arn
-  target_id        = var.private_instance_ids[count.index]
-  port             = 80
-}
-
 // Application load balancer
 resource "aws_lb" "alb" {
   name               = "alb"
