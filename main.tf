@@ -49,6 +49,6 @@ module "asg" {
 }
 
 module "sns" {
-  source = "./modules/sns"
-  asg_notification_email  = var.asg_notification_email
+  source                 = "./modules/sns"
+  asg_notification_email = var.asg_notification_email
 }
