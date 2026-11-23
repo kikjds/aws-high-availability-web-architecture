@@ -45,4 +45,10 @@ module "asg" {
   private_subnet_ids                   = module.vpc.private_subnet_ids
   private_instances_launch_template_id = module.compute.private_instances_launch_template_id
   target_group_arn                     = module.alb.target_group_arn
+  sns_topic_arn                        = module.sns.sns_topic_arn
+}
+
+module "sns" {
+  source                 = "./modules/sns"
+  asg_notification_email = var.asg_notification_email
 }
