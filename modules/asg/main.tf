@@ -50,3 +50,15 @@ resource "aws_autoscaling_policy" "asg_policy" {
     disable_scale_in = false
   }
 }
+
+// ASG notification
+resource "aws_autoscaling_notification" "asg_notification" {
+  group_names = [aws_autoscaling_group.asg.name]
+  notifications = [
+    "autoscaling:EC2_INSTANCE_LAUNCH",
+    "autoscaling:EC2_INSTANCE_TERMINATE",
+    "autoscaling:EC2_INSTANCE_LAUNCH_ERROR",
+    "autoscaling:EC2_INSTANCE_TERMINATE_ERROR",
+  ]
+  topic_arn = var.sns_topic_arn
+}

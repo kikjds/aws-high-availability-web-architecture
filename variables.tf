@@ -71,3 +71,8 @@ variable "instance_type" {
   type        = string
   description = "Instance type"
 }
+
+variable "asg_notification_email" {
+  type        = string
+  description = "Email for asg notification"
+}

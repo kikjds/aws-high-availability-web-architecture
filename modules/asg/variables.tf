@@ -9,3 +9,7 @@ variable "private_instances_launch_template_id" {
 variable "target_group_arn" {
   type = string
 }
+
+variable "sns_topic_arn" {
+  type = string
+}
