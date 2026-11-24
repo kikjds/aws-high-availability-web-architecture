@@ -30,10 +30,34 @@ The project provisions the following resources within a single VPC - `10.10.0.0/
     - Bastion Host - a hardened EC2 instance in a public subnet, used exclusively for secure SSH access to private instances.
 - **Private Layer:**
     - 3 private subnets - in AZ1, AZ2, AZ3.
-    - EC2 Instances - hosting the application, not directly accessible from the internet.
+    - EC2 instances managed by an Auto Scaling Group - hosting the application and not directly accessible from the internet.
     - Target Group - routes traffic from the ALB to the appropriate EC2 instances.
 - **Data Layer and Connectivity:**
     - VPC Gateway Endpoint for DynamoDB - provides secure, private connectivity from private subnets to DynamoDB without traversing the public internet or NAT Gateway - cost-optimized.
+- **Scaling and Notifications:**
+    - Auto Scaling Group - manages instances in the private subnets across all Availability Zones.
+    - Target tracking scaling policy - adjusts capacity to maintain approximately 60% average CPU utilization.
+    - Capacity - minimum 3, desired 3, and maximum 6 instances.
+    - ELB health checks - replace unhealthy instances and maintain application availability.
+    - SNS topic - sends ASG notifications for instance launches, terminations, and launch or termination errors to a configured email address.
+
+## Auto Scaling and SNS configuration
+
+The private EC2 instances are created from a launch template and managed by an
+Auto Scaling Group named `application-instances-asg`. The group uses the private
+subnets, the ALB target group, ELB health checks, and a rack spread placement
+group.
+
+The SNS module creates the `asg-notifications` topic and an email subscription
+for `asg_notification_email`. AWS sends a confirmation email after deployment;
+the subscription must be confirmed before notifications are delivered.
+
+ASG notifications cover:
+
+- successful instance launches,
+- successful instance terminations,
+- instance launch failures,
+- instance termination failures.
 
 # Diagram
 ![AWS 3-Tier Architecture](docs/ALB%20architecture%20.svg)
