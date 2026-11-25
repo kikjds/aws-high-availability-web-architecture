@@ -60,4 +60,4 @@ ASG notifications cover:
 - instance termination failures.
 
 # Diagram
-![AWS 3-Tier Architecture](docs/ALB%20arhitecture.svg20.svg)
+![AWS 3-Tier Architecture](docs/ALB%20arhitecture.svg)
